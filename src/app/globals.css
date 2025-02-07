@@ -2,26 +2,110 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cyberpunk Theme Global Styles */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --neon-green: #00ff00;
+  --dark-bg: #0a0a0a;
+  --text-glow: 0 0 0.5px var(--neon-green), 0 0 1px var(--neon-green);
+  --button-glow: 0 0 0.5px var(--neon-green), 0 0 2px var(--neon-green);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Styles */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--neon-green);
+  font-family: 'Orbitron', sans-serif; /* Futuristic Font */
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Neon Glow for Headers */
+h1, h2, h3, h4, h5, h6 {
+  text-shadow: var(--text-glow);
+}
+
+/* Buttons */
+button {
+  background-color: var(--neon-green);
+  color: var(--dark-bg);
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: var(--button-glow);
+}
+
+button:hover {
+  box-shadow: 0 0 1px var(--neon-green), 0 0 3px var(--neon-green);
+  transform: scale(1.05);
+}
+
+/* Links */
+a {
+  color: var(--neon-green);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  text-shadow: var(--text-glow);
+}
+
+/* Cyberpunk UI Elements */
+.card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--neon-green);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: var(--button-glow);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 1px var(--neon-green), 0 0 3px var(--neon-green);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--neon-green);
+  border-radius: 4px;
+}
+
+/* Cyberpunk Animations */
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.9; }
+  100% { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 1.5s infinite alternate;
+}
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: black;
+  border: 1px solid neon-green;
+  z-index: 50; /* Increase the z-index */
+}
+.navbar {
+  overflow: visible;
+}
+.user-menu-container {
+  position: relative;
+}
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
 }

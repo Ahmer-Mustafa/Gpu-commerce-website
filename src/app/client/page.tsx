@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import Image from "next/image";
-import Header from "../components/Header/header";
 
 // Configure the Inter font with specified subsets and weights
 const interFont = Inter({ 
@@ -49,7 +48,7 @@ const Page = () => {
 
   return (
     <div className={`${interFont.className}`}> {/* Render the header component */}
-      <Header />
+      <header></header>
       <div className="min-h-full bg-gray-900">
         <div className="container mx-auto p-4">
           {/* Page title */}
@@ -109,8 +108,8 @@ const Page = () => {
 
                     {/* Product rating */}
                     <div className="flex justify-between mt-6">
-                      <p className="text-emerald-700 text-sm font-normal">Rate: {product.rating.rate}</p>
-                      <p className="text-emerald-700 text-sm font-normal">Count: {product.rating.count}</p>
+                      <p className="text-emerald-700 text-sm font-normal">Rate: {product.rating?.rate}</p>
+                      <p className="text-emerald-700 text-sm font-normal">Count: {product.rating?.count}</p>
                     </div>
 
                     {/* Add to Cart button */}
