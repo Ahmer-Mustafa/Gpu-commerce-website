@@ -1,8 +1,4 @@
-"use client";  // ✅ Add this to make it a client component
-
-import React, { useState, useEffect } from 'react';
 import { Inter } from 'next/font/google';
-import Head from 'next/head';
 import Navbar from '../components/Navbar/Navbar';
 
 const inter = Inter({
@@ -10,36 +6,30 @@ const inter = Inter({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
 });
 
-interface serverdata {
+interface ServerData {
   id: number;
   name: string;
   type: string;
   available: boolean;
 }
 
-const Page = () => {
-  const [data, setData] = useState<serverdata[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+// ✅ Fetch data directly in the server component
+async function getData(): Promise<ServerData[]> {
+  try {
+    const res = await fetch('https://simple-books-api.glitch.me/books/', { cache: 'no-store' });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('https://simple-books-api.glitch.me/books/');
-        if (!res.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const data: serverdata[] = await res.json();
-        setData(data);
-        setLoading(false);
-      } catch (err) {
-        setError('Error fetching data');
-        setLoading(false);
-      }
-    };
+    if (!res.ok) {
+      throw new Error('Failed to fetch data');
+    }
 
-    fetchData();
-  }, []);
+    return res.json();
+  } catch (err) {
+    return [];
+  }
+}
+
+export default async function Page() {
+  const data = await getData();
 
   return (
     <div className={`${inter.className}`}>
@@ -50,11 +40,8 @@ const Page = () => {
             Server-Side Fetched Books
           </h1>
 
-          {/* Loading State */}
-          {loading && <p className="text-center text-gray-500">Loading...</p>}
-
           {/* Error State */}
-          {error && <p className="text-center text-red-500">{error}</p>}
+          {data.length === 0 && <p className="text-center text-red-500">Error fetching data</p>}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-[40px]">
             {data.map((item) => (
@@ -96,6 +83,4 @@ const Page = () => {
       </div>
     </div>
   );
-};
-
-export default Page;
+}
