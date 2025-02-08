@@ -1,3 +1,5 @@
+"use client";  // ✅ Add this to make it a client component
+
 import React, { useState, useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import Head from 'next/head';

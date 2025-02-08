@@ -1,3 +1,5 @@
+"use client";  // ✅ Add this at the top
+
 import { useState } from 'react';
 
 export default function Contact() {
