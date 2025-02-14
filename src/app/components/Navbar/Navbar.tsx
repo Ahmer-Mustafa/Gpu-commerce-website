@@ -1,16 +1,11 @@
 "use client";
-
-import { useState } from "react";
 import Link from "next/link";
 import { Bell, ShoppingCart, User, Heart, Menu } from "lucide-react";
 import SearchBar from "../searchbar/SearchBar";
 
 const Navbar = () => {
-  const [searchQuery, setSearchQuery] = useState(""); // Stores the search term
-
   // Handle search function
   const handleSearch = (query: string) => {
-    setSearchQuery(query); // Store the search query
     console.log("User searched for:", query);
 
     // Redirect to a search results page (optional)
@@ -33,7 +28,7 @@ const Navbar = () => {
 
         {/* Search Bar Component */}
         <div>
-        <SearchBar onSearch={setSearchQuery} />
+        <SearchBar onSearch={handleSearch} />
         </div>
       </div>
 

@@ -1,5 +1,5 @@
 "use client";  // Ensure this is at the top
-import React from 'react';
+import React, { useState } from 'react'; // Re-added useState
 import { createClient } from "@sanity/client";
 
 // ✅ Sanity Client Setup
@@ -12,15 +12,18 @@ const sanityClient = createClient({
 });
 
 export default function Contact() {
+  // ✅ Re-added useState to avoid error
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
+    const newFormData = new FormData(e.currentTarget);
     const data = {
-      _type: "contact", // Must match your Sanity schema type
-      name: formData.get("name"),
-      email: formData.get("email"),
-      message: formData.get("message"),
+      _type: "contact",
+      name: newFormData.get("name"),
+      email: newFormData.get("email"),
+      message: newFormData.get("message"),
     };
 
     try {

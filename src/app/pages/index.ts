@@ -1,35 +1,59 @@
-import React from "react";
-import { client } from "@/src/sanity/lib/client";
-import { GetServerSideProps } from "next";
+import { createClient } from '@sanity/client';
 
+// Create Sanity client instance
+export const client = createClient({
+  projectId: '6qhqyt37', // Replace with your actual project ID
+  dataset: 'production', // Replace with your dataset name (default: 'production')
+  useCdn: true, // Use CDN for faster response (optional)
+  apiVersion: '2023-01-01', // Set API version (optional)
+  token: process.env.SANITY_API_TOKEN, // If you need to set a token for private API calls
+});
 
-// Define a TypeScript interface for the product data
-interface Product {
-  _id: string;
-  title: string;
-  price: number;
-}
-
-interface HomeProps {
-  products: Product[];
-}
-
-// ✅ Fetch data from Sanity
-export const getServerSideProps: GetServerSideProps = async () => {
-  const products: Product[] = await client.fetch(`*[_type == "product"]`);
-  return { props: { products } };
+// Query function to fetch products
+export const getProducts = async () => {
+  try {
+    const query = `*[_type == "product"]{
+      _id,
+      title,
+      price,
+      description,
+      image {
+        asset -> {
+          _id,
+          url
+        }
+      }
+    }`;
+    
+    const products = await client.fetch(query);
+    return products;
+  } catch (error) {
+    console.error("Error fetching products from Sanity:", error);
+    return [];
+  }
 };
 
-// ✅ Display products
-export default function Home({ products }: HomeProps) {
-  return (
-    <div>
-      {products.map((product) => (
-        <div key={product._id}>
-          <h2>{product.title}</h2>
-          <p>${product.price}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
+// You can also create other functions for fetching different content
+// Example function to fetch product by slug
+export const getProductBySlug = async (slug: string) => {
+  const query = `*[_type == "product" && slug.current == $slug][0]{
+    _id,
+    title,
+    price,
+    description,
+    image {
+      asset -> {
+        _id,
+        url
+      }
+    }
+  }`;
+
+  try {
+    const product = await client.fetch(query, { slug });
+    return product;
+  } catch (error) {
+    console.error("Error fetching product by slug:", error);
+    return null;
+  }
+};
