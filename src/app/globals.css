@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 /* Cyberpunk Theme Global Styles */
-
 :root {
   --neon-green: #00ff00;
   --dark-bg: #0a0a0a;
@@ -90,22 +89,21 @@ a:hover {
 .flicker {
   animation: flicker 1.5s infinite alternate;
 }
+
+/* Navbar & User Menu Fixes */
+.navbar {
+  overflow-x: auto; /* Prevent unwanted horizontal overflow */
+}
+
+.user-menu-container {
+  position: relative;
+}
+
 .user-menu {
   position: absolute;
   right: 0;
   top: 100%;
   background: black;
-  border: 1px solid neon-green;
-  z-index: 50; /* Increase the z-index */
-}
-.navbar {
-  overflow: visible;
-}
-.user-menu-container {
-  position: relative;
-}
-.user-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
+  border: 1px solid var(--neon-green);
+  z-index: 50;
 }

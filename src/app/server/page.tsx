@@ -1,9 +1,9 @@
-import { Inter } from 'next/font/google';
-import Navbar from '../components/Navbar/Navbar';
+import { Inter } from "next/font/google";
+import Navbar from "../components/Navbar/Navbar";
 
 const inter = Inter({
-  subsets: ['vietnamese'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+  subsets: ["vietnamese"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 interface ServerData {
@@ -13,18 +13,19 @@ interface ServerData {
   available: boolean;
 }
 
-// ✅ Fetch data directly in the server component
-async function getData(): Promise<ServerData[]> {
+// ✅ Fetch data directly in the server component with better error handling
+async function getData(): Promise<ServerData[] | null> {
   try {
-    const res = await fetch('https://simple-books-api.glitch.me/books/', { cache: 'no-store' });
+    const res = await fetch("https://simple-books-api.glitch.me/books/", {
+      cache: "no-store",
+    });
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch data');
-    }
+    if (!res.ok) throw new Error("Failed to fetch data");
 
-    return res.json();
+    return (await res.json()) as ServerData[];
   } catch (err) {
-    return [];
+    console.error("Error fetching data:", err);
+    return null;
   }
 }
 
@@ -41,26 +42,32 @@ export default async function Page() {
           </h1>
 
           {/* Error State */}
-          {data.length === 0 && <p className="text-center text-red-500">Error fetching data</p>}
+          {!data && <p className="text-center text-red-500">Error fetching data</p>}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-[40px]">
-            {data.map((item) => (
+            {data?.map((item) => (
               <div
                 key={item.id}
                 className="bg-white w-full h-full rounded-lg shadow-md p-4 hover:shadow-lg hover:scale-105 transition-transform"
               >
                 <div>
-                  <h1 className="text-[15px] text-[#2b9fbd] font-bold">Name: {item.name}</h1>
-                  <p className="text-[15px] font-bold text-[#2b2ebd]">Type: {item.type}</p>
+                  <h1 className="text-[15px] text-[#2b9fbd] font-bold">
+                    Name: {item.name}
+                  </h1>
+                  <p className="text-[15px] font-bold text-[#2b2ebd]">
+                    Type: {item.type}
+                  </p>
                 </div>
 
                 <div>
                   <p
                     className={`mt-2 ${
-                      item.available ? 'text-indigo-500 font-semibold' : 'text-red-500 font-semibold'
+                      item.available
+                        ? "text-indigo-500 font-semibold"
+                        : "text-red-500 font-semibold"
                     }`}
                   >
-                    {item.available ? 'Available' : 'Not Available'}
+                    {item.available ? "Available" : "Not Available"}
                   </p>
                 </div>
 
@@ -68,12 +75,13 @@ export default async function Page() {
                   <button
                     className={`mt-4 w-full py-3 px-7 rounded ${
                       item.available
-                        ? 'bg-indigo-400 hover:bg-indigo-400'
-                        : 'bg-red-500 cursor-not-allowed'
+                        ? "bg-indigo-400 hover:bg-indigo-500"
+                        : "bg-red-500 cursor-not-allowed"
                     } text-white transition duration-300`}
                     disabled={!item.available}
+                    aria-disabled={!item.available}
                   >
-                    {item.available ? 'Book Now' : 'Unavailable'}
+                    {item.available ? "Book Now" : "Unavailable"}
                   </button>
                 </div>
               </div>

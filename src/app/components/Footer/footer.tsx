@@ -56,20 +56,22 @@ const Footer: React.FC = React.memo(() => {
         </div>
       </div>
 
-      {/* Social Icons */}
-      <div className="flex justify-center md:justify-start mt-10 space-x-5 text-neon-green">
-        {socialLinks.map(({ icon: Icon, link }, index) => (
-          <a
-            key={index}
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-2xl cursor-pointer transition-transform transform hover:scale-125 hover:text-white"
-          >
-            <Icon />
-          </a>
-        ))}
-      </div>
+{/* Social Icons */}
+<div className="max-w-7xl mx-auto mt-10">
+  <div className="flex justify-start space-x-5 text-neon-green">
+    {socialLinks.map(({ icon: Icon, link }, index) => (
+      <a
+        key={index}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-2xl cursor-pointer transition-transform transform hover:scale-125 hover:text-white"
+      >
+        <Icon />
+      </a>
+    ))}
+  </div>
+</div>
 
       {/* Bottom Links */}
       <div className="flex flex-col md:flex-row justify-between mt-12 text-sm text-gray-400 max-w-7xl mx-auto">

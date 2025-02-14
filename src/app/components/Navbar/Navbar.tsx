@@ -24,9 +24,10 @@ const Navbar = () => {
       {/* Left Section */}
       <div className="flex items-center space-x-4 relative z-10">
         <div className="flex items-center">
-            <Link href="/Home">
-          <div className="w-8 h-8 bg-neon-green rounded-md shadow-lg" />
-          <span className="text-xl font-bold ml-2 text-neon-green">QuantumPixel</span>
+          {/* Update this Link to point to the homepage */}
+          <Link href="/" passHref>
+            <div className="w-8 h-8 bg-neon-green rounded-md shadow-lg" />
+            <span className="text-xl font-bold ml-2 text-neon-green">QuantumPixel</span>
           </Link>
         </div>
 

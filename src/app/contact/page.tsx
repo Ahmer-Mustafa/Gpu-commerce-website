@@ -1,18 +1,37 @@
 "use client";  // Ensure this is at the top
+import React from 'react';
+import { createClient } from "@sanity/client";
+
+// ✅ Sanity Client Setup
+const sanityClient = createClient({
+  projectId: "6qhqyt37", // Replace with your actual Sanity Project ID
+  dataset: "production", // Change if you are using another dataset
+  apiVersion: "2024-02-14",
+  useCdn: false,
+  token: "sksu0jrqrOLCv74iY4lMyQfJbXus305js5AFQ9TTF3P7SM3N1g69KqmHXEExr90CwC1nTBTNZRqoPoIyf3U0NftYGy4HoxI60RTuVVA8Wogr4tH0sbO700F1f4B015zM580pSi10BOlK1xYKRCLeOFSTR5SFmjMMYygGVezSHYP5Xg1r4PfG", // Add a Sanity API token with write permissions
+});
 
 export default function Contact() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Using FormData to get input values
     const formData = new FormData(e.currentTarget);
     const data = {
-      name: formData.get("name") as string,
-      email: formData.get("email") as string,
-      message: formData.get("message") as string,
+      _type: "contact", // Must match your Sanity schema type
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
     };
 
-    console.log("Form submitted:", data);
+    try {
+      await sanityClient.create(data);
+      console.log("✅ Message sent successfully!");
+      alert("Your message has been sent successfully!");
+      e.currentTarget.reset(); // Clear form fields
+    } catch (error) {
+      console.error("❌ Error submitting form:", error);
+      alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
